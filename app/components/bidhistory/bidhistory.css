@@ -1,0 +1,50 @@
+.bid-history {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    overflow-y: auto;
+    animation: slideIn 0.3s ease-out;
+    z-index: 1000;
+  }
+  
+  @keyframes slideIn {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+  }
+  
+  .close-history {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    cursor: pointer;
+    color: #ff5722;
+  }
+  
+  .bid-history h2 {
+    margin-top: 40px;
+    text-align: center;
+    color: #333;
+  }
+  
+  .bid-history ul {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 0;
+  }
+  
+  .bid-history li {
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px dashed #ccc;
+    color: #555;
+    font-size: 0.9rem;
+  }
+  

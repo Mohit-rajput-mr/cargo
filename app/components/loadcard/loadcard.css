@@ -1,0 +1,68 @@
+.load-card {
+    background-color: #00000072;
+    padding: 10px;
+    margin: 0 auto; /* ensure card is centered in grid item */
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+    width: 100%;
+    max-width: 300px; /* so it fits nicely on mobile */
+    font-family: "Outfit", sans-serif;
+  }
+  
+  .load-image {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+  }
+  
+  .load-card h2 {
+    font-size: 1.4rem;
+    color: #ff370a;
+    margin-bottom: 1px;
+  }
+  
+  .load-card p {
+    font-size: 1rem;
+    color: #ffffff;
+    margin: 2px 0;
+    font-family: "Outfit", sans-serif;
+  }
+  
+  .pickup, .delivery {
+    font-size: 0.9rem;
+    color: #333;
+    margin: 2px 0;
+  }
+  
+  .price {
+    font-weight: bold;
+    margin: 10px 0;
+    color: #03c300; /* bright green text */
+  }
+  
+  .load-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .route-btn,
+  .bid-btn {
+    background-color: #ff5722;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background-color 0.2s ease;
+    border-radius: 4px;
+  }
+  
+  .route-btn:hover,
+  .bid-btn:hover {
+    background-color: #e64a19;
+  }
+  

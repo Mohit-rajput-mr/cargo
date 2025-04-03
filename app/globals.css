@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap');
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Outfit', sans-serif;
+  height: 100%; /* so we can do fixed backgrounds properly */
+  overflow: scroll; /* we’ll handle scroll in a container */
+  background: url('/bg.jpg')  center center / cover no-repeat;
+  background-attachment: fixed;
+
+
+}
+
+/* Make sure we allow a container to scroll for load cards */
+#main-scrollable-content {
+  position: absolute;
+  top: 100vh; /* push below hero */
+  left: 0;
+  width: 100%;
+  height: calc(100% - 100vh); 
+  overflow-y:scroll;
+}
+
+/* Dark mode class if you want it globally.  */
+body.dark-mode {
+  background-color: #121212;
+  color: #fff;
+}

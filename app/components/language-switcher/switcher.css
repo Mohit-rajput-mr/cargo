@@ -1,0 +1,42 @@
+.lang-widget {
+    display: inline-block;
+  }
+  
+  /* Force dropdown background + text color */
+  .goog-te-combo {
+    background: #ff5722 !important;
+    border: none !important;
+    color: #fff !important;
+    padding: 6px 10px !important;
+    font-size: 0.9rem !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    font-family: "Outfit", sans-serif !important;
+    direction: ltr !important;
+  }
+  
+  /* Remove Google branding and "Powered by" text */
+  .goog-logo-link,
+  .goog-te-gadget span,
+  .VIpgJd-ZVi9od-ORHb-OEVmcd,
+  body .skiptranslate > iframe {
+    display: none !important;
+  }
+  
+  /* Ensure language list shows English names */
+  .VIpgJd-ZVi9od-xl07Ob-lTBxed span,
+  .VIpgJd-ZVi9od-xl07Ob-lTBxed select option {
+    font-family: "Outfit", sans-serif !important;
+    direction: ltr !important;
+    unicode-bidi: normal !important;
+  }
+  
+  /* Mobile-specific: ensure dropdown displays properly inside mobile nav */
+  @media (max-width: 768px) {
+    .mobile-nav .lang-widget {
+      display: block;
+      width: 100%;
+      margin-top: 10px;
+    }
+  }
+  
