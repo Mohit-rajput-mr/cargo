@@ -1,6 +1,6 @@
 .hero-section {
     /* Hero is not absolutely fixed, but background is. */
-    margin-top:39px; /* accommodate fixed header height */
+    margin-top:70px; /* accommodate fixed header height */
     width: 100%;
     min-height: 100vh;
     

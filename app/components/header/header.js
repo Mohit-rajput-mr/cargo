@@ -22,7 +22,7 @@ export default function Header({ user, setUser, onToggleBidHistory }) {
   return (
     <header className="site-header">
       <div className="header-left">
-        <h2 className="logo-text">LOGO</h2>
+        <h2 className="logo-text">ACELER AI</h2>
       </div>
 
       {/* Desktop Navigation */}
