@@ -1,98 +1,121 @@
-"use client";
-import { useState } from "react";
-import "./header.css";
-import LoginSignupModal from "../loginsignupmodal/loginsignupmodal";
-import LanguageSwitcher from "../language-switcher/switcher";
-import ThemeToggle from "../theme-toggle/toggle";
-import { FaBars, FaTimes, FaGlobe } from "react-icons/fa";
+'use client';
+import { useState, useEffect } from 'react';
+import './header.css';
+import LoginSignupModal from '../loginsignupmodal/loginsignupmodal';
+import ProfilePanel from '../profile/profile'; // new profile modal component
 
-export default function Header({ user, setUser, onToggleBidHistory }) {
+export default function Header({ user, setUser, onNavClick }) {
   const [showModal, setShowModal] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [showLangDropdown, setShowLangDropdown] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-  const handleToggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
+  // Detect scroll to add a class to header if needed
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-  const handleToggleLangDropdown = () => {
-    setShowLangDropdown(!showLangDropdown);
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
   };
 
   return (
-    <header className="site-header">
+    <header className={`site-header ${scrolled ? 'scrolled' : ''}`}>
+      {/* Left side: Logo */}
       <div className="header-left">
         <h2 className="logo-text">ACELER AI</h2>
       </div>
 
+      {/* Mobile Right: Display full user name (if logged in) and Hamburger */}
+      <div className="mobile-right">
+        {user && (
+          <span className="mobile-username" onClick={() => setShowProfile(true)}>
+            Hi, {user.username}
+          </span>
+        )}
+        <button
+          className={`hamburger ${mobileMenuOpen ? 'open' : ''}`}
+          onClick={toggleMobileMenu}
+          aria-label="Toggle menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
       {/* Desktop Navigation */}
-      <div className="desktop-nav">
-        <nav>
-          <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Services</a></li>
-            <li><a href="#">Blog</a></li>
-            <li><a href="#">Contact</a></li>
-            <li>
-              <button onClick={onToggleBidHistory} className="nav-btn">
-                Bid History
+      <nav className="desktop-nav">
+        <ul>
+          {['home', 'services', 'contacts', 'bidHistory', 'transactionHistory'].map((item) => (
+            <li key={item}>
+              <button
+                onClick={() => onNavClick(item)}
+                className="nav-link"
+              >
+                {item.charAt(0).toUpperCase() + item.slice(1)}
               </button>
             </li>
-            <li><ThemeToggle /></li>
-            <li>
-              {user ? (
-                <span className="user-name">Welcome, {user.name}</span>
-              ) : (
-                <button onClick={() => setShowModal(true)} className="login-btn">
-                  Login/Signup
-                </button>
-              )}
-            </li>
-          </ul>
-        </nav>
-      </div>
-
-
-      {/* Mobile Controls: Login/Signup and Hamburger Icon */}
-      <div className="mobile-controls">
-        {user ? (
-          <span className="user-name">Welcome, {user.name}</span>
-        ) : (
-          <button onClick={() => setShowModal(true)} className="login-btn">
-            Login/Signup
-          </button>
-        )}
-        <div className="hamburger" onClick={handleToggleMenu}>
-          {menuOpen ? <FaTimes size={22} /> : <FaBars size={22} />}
-        </div>
-      </div>
-
-      {/* Mobile slide-in nav (without language switcher) */}
-      <nav className={`mobile-nav ${menuOpen ? "open" : ""}`}>
-        <div className="mobile-nav-header">
-          <button className="close-menu-btn" onClick={handleToggleMenu}>
-            <FaTimes size={22} />
-          </button>
-        </div>
-        <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Services</a></li>
-          <li><a href="#">Blog</a></li>
-          <li><a href="#">Contact</a></li>
+          ))}
           <li>
-            <button onClick={onToggleBidHistory} className="nav-btn">
-              Bid History
-            </button>
+            {user ? (
+              <span className="user-name" onClick={() => setShowProfile(true)}>
+                Hi, {user.username}
+              </span>
+            ) : (
+              <button
+                onClick={() => setShowModal(true)}
+                className="login-btn"
+              >
+                Login/Signup
+              </button>
+            )}
           </li>
-          <li><ThemeToggle /></li>
+        </ul>
+      </nav>
+
+      {/* Mobile Navigation: Slide-in Menu */}
+      <nav className={`mobile-nav ${mobileMenuOpen ? 'open' : ''}`}>
+        <ul>
+          {['home', 'services', 'contacts', 'bidHistory', 'transactionHistory'].map((item) => (
+            <li key={item}>
+              <button
+                onClick={() => {
+                  onNavClick(item);
+                  setMobileMenuOpen(false);
+                }}
+                className="nav-link"
+              >
+                {item.charAt(0).toUpperCase() + item.slice(1)}
+              </button>
+            </li>
+          ))}
+          {!user && (
+            <li>
+              <button
+                onClick={() => {
+                  setShowModal(true);
+                  setMobileMenuOpen(false);
+                }}
+                className="login-btn"
+              >
+                Login/Signup
+              </button>
+            </li>
+          )}
         </ul>
       </nav>
 
       {showModal && (
-        <LoginSignupModal
-          setUser={setUser}
-          onClose={() => setShowModal(false)}
-        />
+        <LoginSignupModal setUser={setUser} onClose={() => setShowModal(false)} />
+      )}
+
+      {showProfile && (
+        <ProfilePanel user={user} setUser={setUser} onClose={() => setShowProfile(false)} />
       )}
     </header>
   );

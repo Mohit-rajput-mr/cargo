@@ -1,0 +1,20 @@
+.transaction-history {
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin: 20px auto;
+    max-width: 800px;
+  }
+  .transaction-history h2 {
+    margin-top: 0;
+  }
+  .transaction-history ul {
+    list-style: none;
+    padding: 0;
+  }
+  .transaction-history li {
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+  }
+  

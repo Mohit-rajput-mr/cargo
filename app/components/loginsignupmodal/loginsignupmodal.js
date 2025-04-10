@@ -1,28 +1,12 @@
 'use client';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import './loginsignupmodal.css';
-import Modal from '../modal/modal';
+import LoginForm from '../loginform/loginform';
 import SignupForm from '../signupform/signupform';
+import Modal from '../modal/modal';
+import './loginsignupmodal.css';
 
 export default function LoginSignupModal({ onClose, setUser }) {
   const [isSignup, setIsSignup] = useState(false);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const router = useRouter();
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    // Admin credentials
-    if (username === 'admin' && password === 'a123') {
-      router.push('/admin');
-      onClose();
-      return;
-    }
-    // Otherwise normal user
-    setUser({ name: username });
-    onClose();
-  };
 
   return (
     <Modal onClose={onClose}>
@@ -35,31 +19,10 @@ export default function LoginSignupModal({ onClose, setUser }) {
             Signup
           </button>
         </div>
-
         {isSignup ? (
           <SignupForm setUser={setUser} onClose={onClose} />
         ) : (
-          <form onSubmit={handleLogin} className="login-form">
-            <input
-              type="text"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="input-field"
-              required
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="input-field"
-              required
-            />
-            <button type="submit" className="login-btn">
-              Login
-            </button>
-          </form>
+          <LoginForm setUser={setUser} onClose={onClose} />
         )}
       </div>
     </Modal>

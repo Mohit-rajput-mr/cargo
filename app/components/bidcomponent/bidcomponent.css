@@ -1,62 +1,194 @@
-.bid-modal {
-    display: flex;
-    gap: 20px;
-    min-height: 200px;
-    width: 100%;
-    max-width: 600px;
+/***********************************
+ * Fix + Center the Bid Modal
+ ***********************************/
+ .bid-modal {
+  /* Position and size */
+  position: fixed;        /* fixed so it doesn't scroll with the page */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+  /* Set a fixed width/height so it won't grow beyond a set dimension */
+  width: 600px;
+  height: 450px;
+
+  /* Glass-like background and styling */
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+
+  /* Layout */
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  z-index: 9999; /* Ensure it appears over other elements */
+
+  /* Overflow hidden so internal sections can manage scrolling */
+  overflow: hidden;
+  box-sizing: border-box;
+  font-family: 'Outfit', sans-serif;
+}
+
+/***********************************
+ * Left + Right Panels
+ ***********************************/
+.bid-left,
+.bid-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/***********************************
+ * Bid Form
+ ***********************************/
+.bid-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bid-input {
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.bid-input:focus {
+  outline: none;
+  border-color: #ff5722;
+  box-shadow: 0 0 5px rgba(255, 87, 34, 0.5);
+}
+
+.submit-btn {
+  padding: 10px 15px;
+  background: linear-gradient(135deg, #ff5722, #ff7043);
+  border: none;
+  border-radius: 9px;
+  color: #000000;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: 0.3s ease;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 87, 34, 0.3);
+}
+
+/***********************************
+ * Right Panel (Bids List)
+ ***********************************/
+.bid-right h3 {
+  margin: 0;
+}
+
+/* Scrollable container for many bids */
+.bid-list-container {
+  flex: 1;               /* Expand to fill vertical space */
+  overflow-y: auto;      /* Enable scrolling if items exceed space */
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 10px;
+}
+
+/***********************************
+ * Bid Items
+ ***********************************/
+.bid-list-container ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.bid-list-container li {
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 6px;
+}
+
+/* Last item won't have a bottom border */
+.bid-list-container li:last-child {
+  border-bottom: none;
+}
+
+/***********************************
+ * Colors for "my-bid" vs "other-bid"
+ ***********************************/
+.my-bid span {
+  /* For desktop, current user's bid shows in blue; for mobile, overridden to orange (see below) */
+  color: rgb(255, 145, 0);
+  font-weight: 600;
+}
+
+.other-bid span {
+  color: #fff;
+}
+
+/* Ensure title text is visible in white */
+.bid-left h3,
+.bid-right h3 {
+  color: #fff !important;
+}
+
+/***********************************
+ * Responsive adjustments for Mobile
+ ***********************************/
+@media (max-width: 768px) {
+  .bid-modal {
+    /* Use most of the viewport width on mobile */
+    width: 90%;
+    /* Let height adjust to content, with a max-height and scroll if necessary */
+    height: auto;
+    max-height: 80vh;
+    padding: 10px;
+    flex-direction: column;  /* Stack left and right panels vertically */
+    overflow-y: auto;
   }
   
+  /* Make both panels full width */
   .bid-left,
   .bid-right {
-    flex: 1;
-    padding: 10px;
+    width: 100%;
   }
   
+  /* Force title text to white */
   .bid-left h3,
   .bid-right h3 {
-    margin-bottom: 10px;
-    color: #333;
+    color: #fff !important;
   }
   
-  .bid-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  /* Override user bid text to be orange and bold for mobile */
+  .my-bid span{
+    color: orange;
+    font-weight: 700;
   }
-  
-  .bid-input {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 0;
+  .other-bid span {
+    color: rgb(255, 255, 255) !important;
+    
   }
-  
-  .submit-btn {
-    padding: 8px 12px;
-    background-color: #ff5722;
-    border: none;
-    color: #fff;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+  .bid-close {
+    top: 5px;
+    right: 5px;
+    font-size: 1.3rem;
   }
-  
-  .submit-btn:hover {
-    background-color: #e64a19;
-  }
-  
-  .bid-right {
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-  }
-  
-  .bid-right ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .bid-right li {
-    margin-bottom: 8px;
-    font-size: 0.9rem;
-    color: #333;
-  }
-  
+}
+.bid-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: #fff;
+  cursor: pointer;
+  z-index: 10000;
+}

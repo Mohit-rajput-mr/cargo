@@ -1,0 +1,13 @@
+.contact-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 100px auto 0;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.contact-content {
+  margin-top: 20px;
+  line-height: 1.6;
+}

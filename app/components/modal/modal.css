@@ -1,33 +1,53 @@
 .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
   
-  .modal {
-    background-color: #fff;
-    padding: 20px 30px;
-    border-radius: 4px;
-    position: relative;
-    max-width: 500px;
-    width: 90%;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  .close-btn {
+}
+
+/* 
+  We remove the white background from .modal so 
+  the .modal-content in loginsignupmodal.css can show through 
+  the glass effect (dark background, etc.).
+*/
+.modal {
+  background-color: transparent;
+  border-radius: 16px;
+  position: relative;
+  max-width: 1000px;
+  width: auto;
+  /* Center the child content (which is your .modal-content) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Close button in the top-right corner */
+.close-btn {
+  color: #ff0000;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(0, 0, 0, 0);
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 1;
+  font-weight:900;
+  border-radius: 50%;
+
+}
+@media (max-width: 600px) {
+
+  .modal{
     position: absolute;
-    top: 15px;
-    right: 15px;
-    background: transparent;
-    border: none;
-    font-size: 1.2rem;
-    cursor: pointer;
   }
-  
+
+}

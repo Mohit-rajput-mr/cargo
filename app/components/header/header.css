@@ -1,244 +1,298 @@
-.site-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 999;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #222;
-    padding: 15px 20px;
-    box-sizing: border-box;
-  }
-  
-  /* Logo styling */
-  .header-left {
-    display: flex;
-    align-items: center;
-  }
-  
-  .logo-text {
-    color: #fff;
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin: 0;
-  }
-  
-  /* Desktop navigation */
-  .desktop-nav {
-    display: flex;
-    flex-grow: 1;
-    justify-content: flex-end;
-  }
-  
-  .desktop-nav nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-  }
-  
-  .desktop-nav li {
-    display: flex;
-    align-items: center;
-  }
-  
-  /* Language selector styling */
-  .language-dropdown-container {
-    position: relative;
-    min-width: 120px;
-  }
-  
-  .language-select,
-  .language-select-mobile {
-    background: #ff5722;
-    color: #fff;
-    padding: 6px 10px;
-    font-size: 0.9rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-family: "Outfit", sans-serif;
-    width: 100%;
-    outline: none;
-  }
-  
-  .language-select option,
-  .language-select-mobile option {
-    background-color: #333;
-    color: #fff;
-  }
-  
-  .desktop-nav a, 
-  .nav-btn {
-    color: #fff;
-    font-weight: 400;
-    text-decoration: none;
-    transition: color 0.2s ease;
-    background: transparent;
-    border: 1px solid transparent;
-    padding: 6px 12px;
-    cursor: pointer;
-  }
-  
-  .desktop-nav a:hover,
-  .nav-btn:hover {
-    color: #ff5722;
-    border-color: #ff5722;
-  }
-  
-  /* Mobile controls */
-  .mobile-controls {
-    display: none;
-    align-items: center;
-    gap: 15px;
-  }
-  
-  .mobile-language {
-    display: flex;
-    align-items: center;
-    width: 100px;
-  }
-  
-  /* Hamburger icon styling */
-  .hamburger {
-    color: #fff;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  /* Mobile navigation menu */
-  .mobile-nav {
-    position: fixed;
-    top: 0;
-    right: -300px;
-    width: 300px;
-    height: 100vh;
-    background: #111;
-    transition: right 0.3s ease;
-    box-sizing: border-box;
-    padding: 30px 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    z-index: 1001;
-  }
-  
-  .mobile-nav.open {
-    right: 0;
-  }
-  
-  .mobile-nav-header {
-    display: flex;
-    justify-content: flex-end;
-    padding: 0 0 20px 0;
-    width: 100%;
-  }
-  
-  .close-menu-btn {
-    background: transparent;
-    border: none;
-    color: #fff;
-    cursor: pointer;
-    padding: 5px;
-  }
-  
-  .mobile-nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  .mobile-nav li {
-    text-align: left;
-    width: 100%;
-  }
-  
-  /* Specific styling for language switcher in mobile nav */
-  .mobile-nav-language, 
-  .mobile-nav-theme {
-    padding: 5px 0;
-    display: block;
-    width: 100%;
-  }
-  
-  .mobile-nav-language .language-dropdown-container,
-  .mobile-nav-theme .theme-toggle-container {
-    width: 100%;
-    max-width: 10px;
-    
-  }
-  
-  .mobile-nav a,
-  .mobile-nav .nav-btn {
-    color: #fff;
-    font-weight: 400;
-    transition: color 0.2s ease;
-    background: transparent;
-    border: 1px solid transparent;
-    padding: 6px 12px;
-    display: block;
-    width: 100%;
-    text-align: left;
-  }
-  
-  .mobile-nav a:hover,
-  .mobile-nav .nav-btn:hover {
-    color: #ff5722;
-    border-color: #ff5722;
-  }
-  
-  /* Login button styling */
-  .login-btn {
-    padding: 10px 15px;
-    background-color: #ff5722;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    text-transform: uppercase;
-    transition: background-color 0.2s ease;
-    border-radius: 5px;
-    font-size: 0.9rem;
-    white-space: nowrap;
-  }
-  
-  .login-btn:hover {
-    background-color: #e64a19;
-  }
-  
-  .user-name {
-    color: #fff;
-    font-weight: bold;
-    white-space: nowrap;
-  }
-  
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    .desktop-nav {
-      display: none;
-    }
-    .mobile-nav-language{
-      display: flex;
-      z-index: 1000;
-    }
-    
-    .mobile-controls {
-      display: flex;
-    }
-    
-    .site-header {
-      padding: 10px 15px;
-    }
-  }
+:root {
+  --primary-color: #ff5722;
+  --secondary-color: #ff7043;
+  --primary-hover: #f4511e;
+  --text-light: #ffffff;
+  --text-dark: #333333;
+  --bg-dark: rgba(0, 0, 0, 0.6);
+  --bg-scrolled: rgba(0, 0, 0, 0.85);
+  --transition-speed: 0.3s;
+  --font-family: 'Outfit', sans-serif;
+}
 
-  .language-icon-container{
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background-color: var(--bg-dark);
+  padding: 0.5rem 2rem;
+  display: flex;
+  align-items: center;
+  z-index: 1000;
+  transition: all var(--transition-speed) ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  font-family: var(--font-family);
+}
+
+.site-header.scrolled {
+  background-color: var(--bg-scrolled);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo-text {
+  font-size: 1.8rem;
+  font-weight: 700;
+  background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  transition: all var(--transition-speed) ease;
+}
+
+.site-header.scrolled .logo-text {
+  font-size: 1.6rem;
+}
+
+/* Mobile Right: Contains username and hamburger */
+.mobile-right {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  margin-right: 10%;
+}
+
+/* Mobile Username: Show full text without ellipsis */
+.mobile-username {
+  color: var(--text-light);
+  font-weight: 500;
+  font-size: 1rem;
+  /* Remove max-width and overflow */
+}
+
+/* Hamburger Menu */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 2rem;
+  height: 2rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.hamburger span {
+  width: 2rem;
+  height: 0.25rem;
+  background: var(--text-light);
+  border-radius: 10px;
+  transition: all 0.3s linear;
+  position: relative;
+  transform-origin: 1px;
+}
+
+.hamburger.open span:first-child {
+  transform: rotate(45deg);
+}
+
+.hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.open span:last-child {
+  transform: rotate(-45deg);
+}
+
+/* Desktop Navigation */
+.desktop-nav {
+  display: flex;
+  margin-left: auto;
+  margin-right: 3%;
+}
+
+.desktop-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
+.desktop-nav ul li .nav-link {
+  background: none;
+  border: none;
+  color: var(--text-light);
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.4rem 0;
+  transition: all var(--transition-speed) ease;
+  position: relative;
+  font-family: var(--font-family);
+}
+
+.desktop-nav ul li .nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+  transition: width var(--transition-speed) ease;
+}
+
+.desktop-nav ul li .nav-link:hover::after {
+  width: 100%;
+}
+
+.desktop-nav ul li .nav-link:hover {
+  color: #ddd;
+}
+
+/* Desktop User Name & Login Button */
+.user-name {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(to right, #ff5722, #ff7043);
+  color: #000000;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  
+}
+
+.login-btn {
+  padding: 0.6rem 1.2rem;
+  background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+  color: var(--text-light);
+  border: none;
+  cursor: pointer;
+  border-radius: 25px;
+  font-weight: 600;
+  transition: all var(--transition-speed) ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(to right, var(--secondary-color), var(--primary-color));
+}
+
+.mobile-nav {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 70%;
+  max-width: 300px;
+  background-color: rgba(0, 0, 0, 0.779);
+  z-index: 1000;
+  transform: translateX(100%);
+  transition: transform var(--transition-speed) ease;
+  padding-top: 5rem;
+  box-shadow: -5px 0 15px rgb(0, 0, 0);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+
+.mobile-nav.open {
+  transform: translateX(0);
+}
+
+.mobile-nav ul {
+  list-style: none;
+  padding: 2rem;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.mobile-nav ul li .nav-link {
+  color: var(--text-light);
+  font-size: 1.2rem;
+  text-align: left;
+  padding: 0.8rem 0;
+  background: none;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all var(--transition-speed) ease;
+}
+
+.mobile-nav ul li .nav-link:hover {
+  color: var(--secondary-color);
+  padding-left: 0.5rem;
+}
+
+/* Responsive: Hide desktop nav, show mobile extras on smaller screens */
+@media (max-width: 992px) {
+  .desktop-nav {
     display: none;
   }
+  
+  .mobile-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+  }
+  
+  .mobile-nav {
+    display: block;
+  }
+  .hamburger{
+    left: -100px;
+    display: flex;
+  }
+  
+  .mobile-username {
+    font-size: 1rem;
+    margin-left: -10px;
+  }
+}
+
+/* Extra Small Screens */
+@media (max-width: 576px) {
+  .site-header {
+    padding: 1rem;
+  }
+  
+  .header-left .logo-text {
+    font-size: 1.4rem;
+  }
+  
+  .mobile-nav {
+    width: 80%;
+  }
+  .hamburger{
+    left: -100px;
+    display: flex;
+  }
+  
+  .mobile-username {
+    font-size: 1rem;
+    margin-left: -10px;
+  }
+}
+.mobile-username {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(to right, #ff5722, #ff7043);
+  color: #000000;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.mobile-username:hover {
+  background: linear-gradient(to right, #ff7043, #ff5722);
+  transform: translateY(-2px);
+}

@@ -1,0 +1,89 @@
+/* 
+  Glassmorphic container for the form 
+  (consistent with your theme/colors)
+*/
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 16px;
+    font-family: 'Outfit', sans-serif;
+    color: #fff;
+    max-width: 350px;
+    margin: auto;
+  }
+  
+  /* Universal input styling */
+  .login-form input {
+    margin-bottom: 15px;
+    padding: 12px;
+    width: 100%;
+    max-width: 300px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    line-height: 1.2;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .login-form input:focus {
+    border-color: #ff5722;
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 87, 34, 0.3);
+  }
+  
+  /* Password field container to position "Show"/"Hide" toggle */
+  .password-field {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 15px;
+  }
+  
+  /* Ensures we have room on the right for the toggle text */
+  .password-field input {
+    padding-right: 60px;
+  }
+  
+  /* "Show"/"Hide" toggle, centered vertically */
+  .toggle-eye {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #ff5722;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    user-select: none;
+  }
+  
+  /* Submit button consistent with your project’s theme */
+  .login-form button {
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #ff5722, #ff7043);
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .login-form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(255, 87, 34, 0.4);
+  }
+  

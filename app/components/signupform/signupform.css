@@ -1,37 +1,198 @@
-.signup-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+/*************************************
+ * FORM CONTAINER
+ *************************************/
+ .signup-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  font-family: 'Outfit', sans-serif;
+  color: #fff;
+  max-width: 1000px; /* Enough room for 3 columns without overflowing */
+  margin: auto;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  /* Added for scrollability on small screens */
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+/*************************************
+ * GRID LAYOUT
+ *************************************/
+.form-grid {
+  display: grid;
+  /* 3 columns on large screens, 2 on mid, 1 on small */
+  grid-template-columns: repeat(3, minmax(200px, 1fr));
+  gap: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* For mid-sized screens, go down to 2 columns */
+@media (max-width: 992px) {
+  .form-grid {
+    grid-template-columns: repeat(2, minmax(200px, 1fr));
   }
-  
-  .input-field {
-    margin-bottom: 10px;
-    padding: 8px;
-    width: 100%;
-    max-width: 300px;
-    border: 1px solid #ccc;
-    border-radius: 0;
+}
+
+/* For small screens, just 1 column */
+@media (max-width: 600px) {
+  .form-grid {
+    grid-template-columns: 1fr;
   }
-  
-  .label {
-    width: 100%;
-    max-width: 300px;
-    text-align: left;
-    margin-top: 10px;
-    margin-bottom: 5px;
-    font-weight: bold;
+}
+
+/*************************************
+ * SHARED INPUT & SELECT STYLES
+ *************************************/
+.grid-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.grid-item input,
+.grid-item select {
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 0.5rem;
+}
+
+.grid-item input:focus,
+.grid-item select:focus {
+  border-color: #ff5722;
+  outline: none;
+}
+
+/*************************************
+ * PASSWORD FIELD
+ *************************************/
+.password-field {
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+
+.password-field input {
+  padding-right: 60px;
+}
+
+.toggle-eye {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #ff5722;
+  font-size: 0.9rem;
+  user-select: none;
+}
+
+/*************************************
+ * FILE UPLOAD SECTION
+ *************************************/
+.file-upload {
+  margin-bottom: 0.5rem;
+}
+
+.file-upload label {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.file-upload button {
+  padding: 8px 14px;
+  background-color: #ff5722;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  margin-bottom: 4px;
+}
+
+.file-upload button:hover {
+  background-color: #ff7043;
+}
+
+.upload-preview {
+  max-width: 60px;
+  margin-top: 4px;
+  border-radius: 4px;
+}
+
+/*************************************
+ * SUBMIT BUTTON
+ *************************************/
+.submit-btn {
+  margin-top: 1rem;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #ff5722, #ff7043);
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  align-self: center;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(255, 87, 34, 0.4);
+}
+
+/* Shared styling for inputs and selects */
+.grid-item input,
+.grid-item select {
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff; /* default for inputs */
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 0.5rem;
+}
+
+/* Override select text color to black (for options, we override below) */
+.grid-item select {
+  color: #000;
+}
+
+/* Grid layout for the form */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(200px, 1fr));
+  gap: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .form-grid {
+    grid-template-columns: repeat(2, minmax(200px, 1fr));
   }
-  
-  .signup-btn {
-    padding: 10px 15px;
-    background-color: #ff5722;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    max-width: 140px;
-    text-transform: uppercase;
-    transition: background-color 0.2s ease;
-    border-radius: 5px;
+}
+
+@media (max-width: 600px) {
+  .form-grid {
+    grid-template-columns: 1fr;
   }
-  
+}

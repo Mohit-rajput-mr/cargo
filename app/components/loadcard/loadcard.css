@@ -1,68 +1,203 @@
+:root {
+  --primary-color: #ff5722;
+  --secondary-color: #ff7043;
+  --primary-hover: #f4511e;
+  --bg-card: rgba(0, 0, 0, 0.6);
+  --border-color: rgba(255, 255, 255, 0.3);
+  --text-color: #fff;
+  --accent-text: #bbb;
+  --font-family: 'Outfit', sans-serif;
+}
+
 .load-card {
-    background-color: #00000072;
-    padding: 10px;
-    margin: 0 auto; /* ensure card is centered in grid item */
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    text-align: center;
-    width: 100%;
-    max-width: 300px; /* so it fits nicely on mobile */
-    font-family: "Outfit", sans-serif;
+  background-color: var(--bg-card);
+  backdrop-filter: blur(8px);
+  padding: 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  text-align: center;
+  max-width: 340px;
+  margin: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  color: var(--text-color);
+  font-family: var(--font-family);
+  display: flex;
+  flex-direction: column;
+  min-height: 480px;
+}
+
+.load-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6);
+}
+
+.image-slider {
+  position: relative;
+  width: 300px;
+  height: 200px;
+  margin: 0 auto 15px auto;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.load-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.5s ease;
+}
+
+.load-card:hover .load-image {
+  transform: scale(1.02);
+}
+
+.slider-btn {
+  position: absolute;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.7);
+  border: none;
+  color: #fff;
+  font-size: 1.4rem;
+  cursor: pointer;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 8px 14px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+}
+
+.slider-btn-left {
+  left: 10px;
+}
+
+.slider-btn-right {
+  right: 10px;
+}
+
+.image-slider:hover .slider-btn {
+  opacity: 1;
+}
+
+.slider-btn:hover {
+  background: rgba(0, 0, 0, 0.8);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.load-card h2 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.load-card p {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  margin: 8px 0;
+}
+
+.pickup,
+.delivery {
+  color: var(--accent-text);
+}
+
+/* New orange time/date style */
+.upload-time {
+  font-size: 0.85rem;
+  color: var(--secondary-color);
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+.load-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 15px;
+}
+
+.route-btn,
+.bid-btn {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: black;
+  border: none;
+  padding: 12px 0;
+  cursor: pointer;
+  border-radius: 7px;
+  font-weight: 600;
+  flex: 1;
+  transition: background 0.4s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 5px rgba(255, 87, 34, 0.3);
+  position: relative;
+  overflow: hidden;
+  font-family: var(--font-family);
+  font-size: medium;
+}
+
+.route-btn::before,
+.bid-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.route-btn:hover::before,
+.bid-btn:hover::before {
+  left: 100%;
+}
+
+.route-btn:hover,
+.bid-btn:hover {
+  background: linear-gradient(135deg, var(--primary-hover), var(--primary-color));
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(255, 87, 34, 0.4);
+}
+
+.route-btn:active,
+.bid-btn:active {
+  transform: translateY(0);
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 87, 34, 0.7);
   }
-  
-  .load-image {
-    width: 100%;
-    height: auto;
-    margin-bottom: 10px;
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 87, 34, 0);
   }
-  
-  .load-card h2 {
-    font-size: 1.4rem;
-    color: #ff370a;
-    margin-bottom: 1px;
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 87, 34, 0);
   }
-  
-  .load-card p {
-    font-size: 1rem;
-    color: #ffffff;
-    margin: 2px 0;
-    font-family: "Outfit", sans-serif;
-  }
-  
-  .pickup, .delivery {
-    font-size: 0.9rem;
-    color: #333;
-    margin: 2px 0;
-  }
-  
-  .price {
-    font-weight: bold;
+}
+
+.bid-btn.highlight {
+  animation: pulse 1.5s infinite;
+}
+
+.card-content {
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .load-card {
+    max-width: 100%;
     margin: 10px 0;
-    color: #03c300; /* bright green text */
   }
-  
-  .load-actions {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 10px;
+
+  .slider-btn {
+    opacity: 1;
   }
-  
-  .route-btn,
-  .bid-btn {
-    background-color: #ff5722;
-    color: #fff;
-    border: none;
-    padding: 8px 12px;
-    cursor: pointer;
-    text-transform: uppercase;
-    transition: background-color 0.2s ease;
-    border-radius: 4px;
-  }
-  
-  .route-btn:hover,
-  .bid-btn:hover {
-    background-color: #e64a19;
-  }
-  
+}

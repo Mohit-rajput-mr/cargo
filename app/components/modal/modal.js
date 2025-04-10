@@ -13,6 +13,10 @@ export default function Modal({ children, onClose }) {
 
   return (
     <div className="overlay" onClick={handleOverlayClick}>
+      {/* 
+        We rely on the .modal-content styling from loginsignupmodal.css
+        to provide the actual glass background + layout.
+      */}
       <div className="modal" onClick={handleModalClick}>
         <button onClick={onClose} className="close-btn">x</button>
         {children}

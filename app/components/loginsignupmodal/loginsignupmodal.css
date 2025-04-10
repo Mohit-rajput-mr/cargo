@@ -1,58 +1,38 @@
 .modal-content {
-    padding: 20px;
-  }
-  
-  .toggle-buttons {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-  }
-  
-  .toggle-buttons button {
-    flex: 1;
-    padding: 10px;
-    cursor: pointer;
-    border: none;
-    background-color: #f1f1f1;
-    color: #333;
-    font-size: 1rem;
-    transition: background-color 0.2s ease;
-  }
-  
-  .toggle-buttons button:hover {
-    background-color: #e2e2e2;
-  }
-  
-  .toggle-buttons button.active {
-    background-color: #ff5722;
-    color: #fff;
-  }
-  
-  .login-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .input-field {
-    margin-bottom: 10px;
-    padding: 8px;
-    width: 100%;
-    max-width: 300px;
-    border: 1px solid #ccc;
-    border-radius: 0;
-  }
-  
-  .login-btn {
-    padding: 10px 15px;
-    background-color: #ff5722;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    max-width: 140px;
-    text-transform: uppercase;
-    transition: background-color 0.2s ease;
-    border-radius: 5px;
-  }
-  
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  padding: 20px;
+  border-radius: 16px;
+  width: 320px;
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  width: auto;
+}
+
+.toggle-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+
+.toggle-buttons button {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding-bottom: 5px;
+  transition: border-bottom 0.3s ease, color 0.3s ease;
+}
+
+.toggle-buttons button:hover {
+  color: #ddd;
+}
+
+.toggle-buttons .active {
+  border-bottom: 2px solid #ff5722;
+  font-weight: bold;
+}
