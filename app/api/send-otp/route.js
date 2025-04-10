@@ -1,6 +1,5 @@
 import { Redis } from '@upstash/redis';
 import nodemailer from 'nodemailer';
-import { NextResponse } from 'next/server';
 
 // Initialize Upstash Redis client
 const redis = new Redis({
@@ -18,12 +17,14 @@ export async function POST(request) {
     // Expect JSON body with an "email" field
     const { email } = await request.json();
     if (!email) {
-      return NextResponse.json({ error: 'Email is required' }, { status: 400 });
+      return new Response(JSON.stringify({ error: 'Email is required' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
     }
     
     // Generate OTP
     const otp = generateOTP();
-
     // Store the OTP in Redis with a TTL of 300 seconds (5 minutes)
     await redis.set(`otp:${email}`, otp, { ex: 300 });
 
@@ -48,9 +49,15 @@ export async function POST(request) {
     await transporter.sendMail(mailOptions);
 
     // Do not return the OTP to the client in production!
-    return NextResponse.json({ message: 'OTP sent successfully' });
+    return new Response(JSON.stringify({ message: 'OTP sent successfully' }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    });
   } catch (error) {
     console.error("Error in /api/send-otp/route.js POST:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 }

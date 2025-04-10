@@ -1,21 +1,15 @@
 import pool from '../../../../lib/db';
-import { NextResponse } from 'next/server';
-import { getIO } from '../../../../server';
 
 export async function POST(req) {
-  const { bidId, message, userId } = await req.json();
+  const { bidId, message } = await req.json();
   try {
     await pool.query(
       'UPDATE bids SET status = ?, adminMessage = ?, status_updated_at = NOW() WHERE id = ?',
       ['rejected', message, bidId]
     );
-    const io = getIO();
-    io.to(`user_${userId}`).emit('bidNotification', {
-      message: `Your bid (ID: ${bidId}) was rejected! Message: ${message}`,
-      status: 'rejected'
-    });
-    return NextResponse.json({ success: true });
+
+    return new Response(JSON.stringify({ success: true }), { status: 200 });
   } catch (err) {
-    return NextResponse.json({ error: 'Error rejecting bid' }, { status: 500 });
+    return new Response(JSON.stringify({ error: 'Error rejecting bid' }), { status: 500 });
   }
 }

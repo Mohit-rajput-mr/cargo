@@ -1,5 +1,4 @@
-import pool from '../../../../lib/db';
-import { NextResponse } from 'next/server';
+import pool from '../../../lib/db';
 import bcrypt from 'bcrypt';
 
 export async function POST(request) {
@@ -8,21 +7,36 @@ export async function POST(request) {
   
   // Built-in admin credentials check
   if (username === 'admin' && password === 'a123') {
-    return NextResponse.json({ message: 'Admin login successful', user: { username: 'admin', siteId: 'ADMIN' } });
+    return new Response(
+      JSON.stringify({ message: 'Admin login successful', user: { username: 'admin', siteId: 'ADMIN' } }),
+      { status: 200, headers: { 'Content-Type': 'application/json' } }
+    );
   }
   
   try {
     const [users] = await pool.query('SELECT * FROM users WHERE username = ?', [username]);
     if (users.length === 0) {
-      return NextResponse.json({ error: 'Invalid username or password' }, { status: 400 });
+      return new Response(
+        JSON.stringify({ error: 'Invalid username or password' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
     }
     const user = users[0];
     const isValid = await bcrypt.compare(password, user.password);
     if (!isValid) {
-      return NextResponse.json({ error: 'Invalid username or password' }, { status: 400 });
+      return new Response(
+        JSON.stringify({ error: 'Invalid username or password' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
     }
-    return NextResponse.json({ message: 'Login successful', user });
+    return new Response(
+      JSON.stringify({ message: 'Login successful', user }),
+      { status: 200, headers: { 'Content-Type': 'application/json' } }
+    );
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return new Response(
+      JSON.stringify({ error: error.message }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
+    );
   }
 }

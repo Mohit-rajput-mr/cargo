@@ -1,12 +1,17 @@
 import pool from '../../../lib/db';
-import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
     const [rows] = await pool.query('SELECT * FROM loads');
-    return NextResponse.json({ loads: rows });
+    return new Response(JSON.stringify({ loads: rows }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" }
+    });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
   }
 }
 
@@ -18,13 +23,18 @@ export async function POST(request) {
       'INSERT INTO loads (imageUrl, title, description, pickup, delivery, pay) VALUES (?, ?, ?, ?, ?, ?)',
       [imageUrl, title, description, pickup, delivery, pay]
     );
-    return NextResponse.json({ id: result.insertId });
+    return new Response(JSON.stringify({ id: result.insertId }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" }
+    });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
   }
 }
 
-// PUT => update an existing load
 export async function PUT(request) {
   try {
     const body = await request.json();
@@ -33,23 +43,37 @@ export async function PUT(request) {
       'UPDATE loads SET imageUrl = ?, title = ?, description = ?, pickup = ?, delivery = ?, pay = ? WHERE id = ?',
       [imageUrl, title, description, pickup, delivery, pay, id]
     );
-    return NextResponse.json({ message: 'Load updated successfully' });
+    return new Response(JSON.stringify({ message: 'Load updated successfully' }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" }
+    });
   } catch (err) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    return new Response(JSON.stringify({ error: err.message }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
   }
 }
 
-// DELETE => remove a load
 export async function DELETE(request) {
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
     if (!id) {
-      return NextResponse.json({ error: 'Missing id' }, { status: 400 });
+      return new Response(JSON.stringify({ error: 'Missing id' }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" }
+      });
     }
     await pool.query('DELETE FROM loads WHERE id = ?', [id]);
-    return NextResponse.json({ message: 'Load deleted successfully' });
+    return new Response(JSON.stringify({ message: 'Load deleted successfully' }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" }
+    });
   } catch (err) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    return new Response(JSON.stringify({ error: err.message }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
   }
 }

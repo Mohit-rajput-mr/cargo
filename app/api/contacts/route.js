@@ -1,52 +1,77 @@
 import pool from '../../../lib/db';
-import { NextResponse } from 'next/server';
 
-// GET: Retrieve all contact records
 export async function GET(request) {
   try {
     const [rows] = await pool.query('SELECT * FROM contacts');
-    return NextResponse.json({ contacts: rows });
+    return new Response(JSON.stringify({ contacts: rows }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 }
 
-// POST: Insert a new contact record
 export async function POST(request) {
   try {
     const { description } = await request.json();
     const [result] = await pool.query('INSERT INTO contacts (description) VALUES (?)', [description]);
-    return NextResponse.json({ id: result.insertId });
+    return new Response(JSON.stringify({ id: result.insertId }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 }
 
-// PUT: Update an existing contact record
 export async function PUT(request) {
   try {
     const { id, description } = await request.json();
     if (!id) {
-      return NextResponse.json({ error: 'Missing id' }, { status: 400 });
+      return new Response(JSON.stringify({ error: 'Missing id' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
     }
     await pool.query('UPDATE contacts SET description = ? WHERE id = ?', [description, id]);
-    return NextResponse.json({ message: 'Contact updated successfully' });
+    return new Response(JSON.stringify({ message: 'Contact updated successfully' }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 }
 
-// DELETE: Remove a contact record by id (passed as a query parameter)
 export async function DELETE(request) {
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
     if (!id) {
-      return NextResponse.json({ error: 'Missing id' }, { status: 400 });
+      return new Response(JSON.stringify({ error: 'Missing id' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
     }
     await pool.query('DELETE FROM contacts WHERE id = ?', [id]);
-    return NextResponse.json({ message: 'Contact deleted successfully' });
+    return new Response(JSON.stringify({ message: 'Contact deleted successfully' }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 }

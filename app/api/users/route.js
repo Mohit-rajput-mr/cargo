@@ -1,21 +1,24 @@
 import pool from '../../../lib/db';
-import { NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
 
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
-    const id = searchParams.get('id'); // optional param
+    const id = searchParams.get('id');
 
     if (id) {
-      // fetch single user
       const [rows] = await pool.query('SELECT * FROM users WHERE id = ?', [id]);
       if (rows.length === 0) {
-        return NextResponse.json({ error: 'User not found' }, { status: 404 });
+        return new Response(JSON.stringify({ error: 'User not found' }), {
+          status: 404,
+          headers: { 'Content-Type': 'application/json' }
+        });
       }
-      return NextResponse.json(rows[0]);
+      return new Response(JSON.stringify(rows[0]), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
     } else {
-      // fetch all users
       const [rows] = await pool.query(`
         SELECT 
           id, siteId, username, name, email, truckType, customTruckType,
@@ -23,10 +26,16 @@ export async function GET(request) {
           drivingLicenseFront, drivingLicenseBack, idCardFront, idCardBack, created_at, isDeleted
         FROM users
       `);
-      return NextResponse.json({ users: rows });
+      return new Response(JSON.stringify({ users: rows }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
     }
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 }
 
@@ -50,14 +59,16 @@ export async function PUT(request) {
       drivingLicenseBack,
       idCardFront,
       idCardBack,
-      password // new plain text password (if provided)
+      password
     } = data;
 
     if (!id) {
-      return NextResponse.json({ error: 'Missing user id' }, { status: 400 });
+      return new Response(JSON.stringify({ error: 'Missing user id' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
     }
 
-    // Build the update query. We update all fields.
     let query = `UPDATE users SET
       username = ?,
       name = ?,
@@ -92,7 +103,6 @@ export async function PUT(request) {
       idCardBack
     ];
 
-    // If a new password is provided (nonempty), hash it before updating.
     if (password && password.trim() !== '') {
       const hashedPassword = await bcrypt.hash(password, 10);
       query += ', password = ?';
@@ -103,28 +113,44 @@ export async function PUT(request) {
 
     await pool.query(query, params);
 
-    // Return the updated record.
     const [rows] = await pool.query('SELECT * FROM users WHERE id = ?', [id]);
     if (rows.length === 0) {
-      return NextResponse.json({ error: 'User not found after update' }, { status: 404 });
+      return new Response(JSON.stringify({ error: 'User not found after update' }), {
+        status: 404,
+        headers: { 'Content-Type': 'application/json' }
+      });
     }
-    return NextResponse.json(rows[0]);
+    return new Response(JSON.stringify(rows[0]), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 }
 
 export async function DELETE(request) {
-  const { searchParams } = new URL(request.url);
-  const id = searchParams.get('id');
-
   try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
     if (!id) {
-      return NextResponse.json({ error: 'Missing user id' }, { status: 400 });
+      return new Response(JSON.stringify({ error: 'Missing user id' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
     }
     await pool.query('DELETE FROM users WHERE id = ?', [id]);
-    return NextResponse.json({ message: 'User deleted successfully' });
+    return new Response(JSON.stringify({ message: 'User deleted successfully' }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 }

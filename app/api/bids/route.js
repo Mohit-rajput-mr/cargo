@@ -1,5 +1,4 @@
 import pool from '../../../lib/db';
-import { NextResponse } from 'next/server';
 
 // GET => returns all bids, joined with user data (name, email, truckType, etc.)
 export async function GET() {
@@ -23,9 +22,9 @@ export async function GET() {
       LEFT JOIN users u ON b.userId = u.id
     `;
     const [rows] = await pool.query(query);
-    return NextResponse.json({ bids: rows });
+    return new Response(JSON.stringify({ bids: rows }), { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
   }
 }
 
@@ -34,33 +33,29 @@ export async function POST(request) {
   const data = await request.json();
   const { loadId, bidAmount, userId } = data;
   try {
-    // Insert a new bid setting isRemoved = 0 by default
     const [result] = await pool.query(
       'INSERT INTO bids (loadId, bidAmount, userId, status, isRemoved) VALUES (?, ?, ?, "pending", 0)',
       [loadId, bidAmount, userId]
     );
-    return NextResponse.json({ id: result.insertId });
+    return new Response(JSON.stringify({ id: result.insertId }), { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
   }
 }
 
 // PUT => update a bid (approve/reject/edit/remove/restore)
 export async function PUT(request) {
   const data = await request.json();
-  // Allowed fields: status, adminMessage, bidAmount, isRemoved (true/false)
   const { bidId, status, adminMessage, bidAmount, isRemoved } = data;
 
   try {
     let query = 'UPDATE bids SET ';
     const fields = [];
     const params = [];
-    // Only update the fields provided
 
     if (status !== undefined) {
       fields.push(`status = ?`);
       params.push(status);
-      // When status is updated we also update the status_updated_at timestamp
       fields.push(`status_updated_at = NOW()`);
     }
     if (adminMessage !== undefined) {
@@ -82,16 +77,17 @@ export async function PUT(request) {
     }
 
     if (fields.length === 0) {
-      return NextResponse.json({ error: 'No fields to update' }, { status: 400 });
+      return new Response(JSON.stringify({ error: 'No fields to update' }), { status: 400 });
     }
+
     query += fields.join(', ');
     query += ' WHERE id = ?';
     params.push(bidId);
 
     await pool.query(query, params);
-    return NextResponse.json({ message: 'Bid updated successfully' });
+    return new Response(JSON.stringify({ message: 'Bid updated successfully' }), { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
   }
 }
 
@@ -101,8 +97,8 @@ export async function DELETE(request) {
   const id = searchParams.get('id');
   try {
     await pool.query('DELETE FROM bids WHERE id = ?', [id]);
-    return NextResponse.json({ message: 'Bid deleted successfully' });
+    return new Response(JSON.stringify({ message: 'Bid deleted successfully' }), { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
   }
 }
