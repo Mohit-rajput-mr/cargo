@@ -1,8 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
+import Pusher from 'pusher-js';
 import './bidhistory.css';
 
-// Helper function to format a timestamp relative to now.
 function getRelativeTime(ts) {
   if (!ts) return '';
   const dateObj = new Date(ts);
@@ -28,7 +28,6 @@ export default function BidHistory({ currentUser }) {
         const res = await fetch('/api/bids');
         const data = await res.json();
         if (Array.isArray(data.bids) && currentUser) {
-          // Filter bids to only those of the current user.
           const userBids = data.bids.filter(bid => bid.userId === currentUser.id);
           setAllBids(userBids);
         }
@@ -36,30 +35,43 @@ export default function BidHistory({ currentUser }) {
         console.error('Failed to fetch bids:', error);
       }
     }
+
     if (currentUser) {
       fetchBids();
+
+      const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
+        cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
+      });
+
+      const channel = pusher.subscribe(`load_${currentUser.id}`);
+      channel.bind('new-bid', (data) => {
+        if (data.userId === currentUser.id) {
+          setAllBids(prev => {
+            if (prev.some(b => b.id === data.id)) return prev;
+            return [data, ...prev];
+          });
+        }
+      });
+
+      return () => {
+        pusher.unsubscribe(`load_${currentUser.id}`);
+      };
     }
   }, [currentUser]);
 
-  // Separate bids into active and removed.
-  // We assume: isRemoved = 0 means active, and isRemoved = 1 means removed.
   const activeBids = allBids.filter(bid => Number(bid.isRemoved) === 0);
   const removedBids = allBids.filter(bid => Number(bid.isRemoved) === 1);
 
-  // In active bids, show updated bids (approved/rejected with status_updated_at) on top,
-  // then pending bids sorted by creation time.
-  const updatedBids = activeBids
-    .filter(bid => bid.status !== 'pending' && bid.status_updated_at)
-    .sort((a, b) => new Date(b.status_updated_at) - new Date(a.status_updated_at));
-  const pendingBids = activeBids
-    .filter(bid => bid.status === 'pending' || !bid.status_updated_at)
-    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-  const sortedActiveBids = [...updatedBids, ...pendingBids];
+  // Sort by the most recent timestamp from either created_at or status_updated_at
+  const sortByLatest = (a, b) => {
+    const aTime = new Date(a.status_updated_at || a.created_at);
+    const bTime = new Date(b.status_updated_at || b.created_at);
+    return bTime - aTime;
+  };
 
-  // Sort removed bids (from the bin) by created_at descending.
-  const sortedRemovedBids = removedBids.slice().sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  const sortedActiveBids = activeBids.sort(sortByLatest);
+  const sortedRemovedBids = removedBids.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
-  // Handler to "remove" a bid (i.e. set isRemoved = true in the database)
   const handleRemove = async (bidId) => {
     try {
       const res = await fetch('/api/bids', {
@@ -68,14 +80,12 @@ export default function BidHistory({ currentUser }) {
         body: JSON.stringify({ bidId, isRemoved: true })
       });
       if (!res.ok) throw new Error('Failed to remove bid');
-      // Update local state with new removal flag.
       setAllBids(prev => prev.map(bid => bid.id === bidId ? { ...bid, isRemoved: 1, removed_at: new Date() } : bid));
     } catch (error) {
       console.error('Error removing bid:', error);
     }
   };
 
-  // Handler to "restore" a bid (i.e. set isRemoved = false in the database)
   const handleRestore = async (bidId) => {
     try {
       const res = await fetch('/api/bids', {
@@ -84,7 +94,6 @@ export default function BidHistory({ currentUser }) {
         body: JSON.stringify({ bidId, isRemoved: false })
       });
       if (!res.ok) throw new Error('Failed to restore bid');
-      // Update local state with restored bid.
       setAllBids(prev => prev.map(bid => bid.id === bidId ? { ...bid, isRemoved: 0, removed_at: null } : bid));
     } catch (error) {
       console.error('Error restoring bid:', error);
@@ -118,19 +127,13 @@ export default function BidHistory({ currentUser }) {
                 )}
               </p>
               {bid.adminMessage && (
-                <p>
-                  <strong>Message from Admin:</strong> {bid.adminMessage}
-                </p>
+                <p><strong>Message from Admin:</strong> {bid.adminMessage}</p>
               )}
               <p><strong>Placed:</strong> {getRelativeTime(bid.created_at)}</p>
               {viewBin ? (
-                <button className="restore-btn" onClick={() => handleRestore(bid.id)}>
-                  Restore
-                </button>
+                <button className="restore-btn" onClick={() => handleRestore(bid.id)}>Restore</button>
               ) : (
-                <button className="remove-btn" onClick={() => handleRemove(bid.id)}>
-                  Remove
-                </button>
+                <button className="remove-btn" onClick={() => handleRemove(bid.id)}>Remove</button>
               )}
             </li>
           ))}

@@ -2,10 +2,11 @@
 import { useState, useEffect, useRef } from 'react';
 import Modal from '../components/modal/modal';
 import { FaCopy, FaMoon, FaSun } from 'react-icons/fa';
-import io from 'socket.io-client';
+import Pusher from 'pusher-js';
 import './page.css';
 
-let socket;
+// No more socket.io import
+// let socket;
 
 export default function AdminPage() {
   // Dark Mode Toggle State with persistence
@@ -369,18 +370,22 @@ export default function AdminPage() {
     }
   };
 
-  // Socket.io for unseen bid functionality + manual refresh button added.
+  // ======= Pusher for Bids (Replacing Socket.IO) =======
   useEffect(() => {
-    socket = io();
     fetchAllData();
-    socket.on('bid', (incomingBid) => {
+
+    const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
+      cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
+    });
+    const channel = pusher.subscribe('global-bids');
+    channel.bind('new-bid', (incomingBid) => {
       fetchAllData();
       if (incomingBid.status === 'pending') {
         setUnseenBidIds(prev => [...prev, incomingBid.id]);
       }
     });
     return () => {
-      socket.disconnect();
+      pusher.unsubscribe('global-bids');
     };
   }, []);
 
@@ -1027,7 +1032,6 @@ export default function AdminPage() {
             <label>
               Document Upload:
               <button type="button" onClick={handleDocumentUpload} title="Upload Document">Upload Document</button>
-              {/* Show preview if available */}
               {documentPreview && <img src={documentPreview} alt="Document Preview" className="doc-preview" />}
               <input type="hidden" name="documentUrl" required />
             </label>
@@ -1040,7 +1044,6 @@ export default function AdminPage() {
             ) : (
               <ul>
                 {transactions.map(tx => {
-                  // Find user info from users array
                   const userInfo = users.find(u => u.id === tx.userId);
                   return (
                     <li key={tx.id}>

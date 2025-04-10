@@ -1,6 +1,7 @@
-import pool from '../../../lib/db';
+import pool from '@/lib/db';
+import pusher from '@/lib/pusher';
 
-// GET => returns all bids, joined with user data (name, email, truckType, etc.)
+// GET => returns all bids
 export async function GET() {
   try {
     const query = `
@@ -28,22 +29,49 @@ export async function GET() {
   }
 }
 
-// POST => create a new bid
+// POST => create a new bid and broadcast using Pusher
 export async function POST(request) {
-  const data = await request.json();
-  const { loadId, bidAmount, userId } = data;
   try {
+    const { loadId, bidAmount, userId } = await request.json();
+
+    // 1. Insert the bid
     const [result] = await pool.query(
       'INSERT INTO bids (loadId, bidAmount, userId, status, isRemoved) VALUES (?, ?, ?, "pending", 0)',
       [loadId, bidAmount, userId]
     );
-    return new Response(JSON.stringify({ id: result.insertId }), { status: 200 });
+
+    const newBidId = result.insertId;
+
+    // 2. Fetch user info
+    const [[user]] = await pool.query(
+      'SELECT name FROM users WHERE id = ?',
+      [userId]
+    );
+
+    const userName = user?.name || `User ${userId}`;
+
+    // 3. Create final bid payload
+    const newBid = {
+      id: newBidId,
+      loadId,
+      bidAmount,
+      userId,
+      userName,
+      status: 'pending',
+    };
+
+    // 4. Broadcast via Pusher
+    await pusher.trigger('global-bids', 'new-bid', newBid);
+    // Also broadcast on per load channel if needed for user view:
+    await pusher.trigger(`load_${loadId}`, 'new-bid', newBid);
+
+    return new Response(JSON.stringify({ id: newBidId }), { status: 200 });
   } catch (error) {
     return new Response(JSON.stringify({ error: error.message }), { status: 500 });
   }
 }
 
-// PUT => update a bid (approve/reject/edit/remove/restore)
+// PUT => update bid
 export async function PUT(request) {
   const data = await request.json();
   const { bidId, status, adminMessage, bidAmount, isRemoved } = data;
@@ -69,11 +97,7 @@ export async function PUT(request) {
     if (isRemoved !== undefined) {
       fields.push(`isRemoved = ?`);
       params.push(isRemoved ? 1 : 0);
-      if (isRemoved) {
-        fields.push(`removed_at = NOW()`);
-      } else {
-        fields.push(`removed_at = NULL`);
-      }
+      fields.push(`removed_at = ${isRemoved ? 'NOW()' : 'NULL'}`);
     }
 
     if (fields.length === 0) {
@@ -91,10 +115,11 @@ export async function PUT(request) {
   }
 }
 
-// DELETE => permanently delete a bid (if needed)
+// DELETE => remove bid
 export async function DELETE(request) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get('id');
+
   try {
     await pool.query('DELETE FROM bids WHERE id = ?', [id]);
     return new Response(JSON.stringify({ message: 'Bid deleted successfully' }), { status: 200 });
