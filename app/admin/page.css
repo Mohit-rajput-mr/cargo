@@ -722,3 +722,144 @@
 .admin-close-btn:hover {
   background: #e64a19;
 }
+/* ========================= */
+/*  Edit Load Modal & Form   */
+/* ========================= */
+.edit-load-modal {
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  padding: 30px 20px 20px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+
+
+.edit-load-title {
+  margin-top: 0;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #000;
+  font-size: 1.8rem;
+  border-bottom: 2px solid #ff5722;
+  padding-bottom: 10px;
+}
+
+/* 
+  The .edit-load-form uses a grid for large screens 
+  but collapses to a single column on smaller screens.
+*/
+.edit-load-form {
+  display: grid;
+  /* Large screens: multiple columns; smaller: single */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* Ensure each label becomes a vertical field */
+.edit-load-form label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.edit-load-form input,
+.edit-load-form textarea {
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+.edit-load-form input:focus,
+.edit-load-form textarea:focus {
+  border-color: #ff5722;
+}
+
+/* Upload Additional Image Section */
+.edit-load-upload {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Image Preview Container inside the Edit Modal */
+.edit-load-upload .image-preview-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Each image + remove button wrapper */
+.edit-image-preview {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+.edit-image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* "X" Button for removing each image */
+.remove-img-btn {
+  position: absolute;
+  top: -18px;
+  right: -8px;
+  max-width: 1px;
+  height: 20px;
+  background-color: #ff0000;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+.remove-img-btn:hover {
+  background-color: #d32f2f;
+}
+
+/* Submit Button for Edit Load Form */
+.edit-load-form button[type="submit"] {
+  grid-column: 1 / -1;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #2196f3;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: fit-content; /* adjusts to content width unless forced by grid */
+}
+.edit-load-form button[type="submit"]:hover {
+  background-color: #1976d2;
+}
+
+/* 
+  Mobile Adjustments:
+  Force single-column layout so 
+  Pickup, Delivery, Pay fields appear vertically
+*/
+@media (max-width: 768px) {
+  .edit-load-form {
+    grid-template-columns: 1fr !important;
+  }
+  .edit-load-upload .image-preview-container {
+    justify-content: flex-start;
+  }
+}
