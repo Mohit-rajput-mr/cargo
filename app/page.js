@@ -6,12 +6,14 @@ import Service from './components/service/service';
 import Contact from './components/contact/contact';
 import BidHistory from './components/bidhistory/bidhistory';
 import TransactionHistory from './components/transactionhistory/transactionhistory';
+import AdminPage from './admin/page.client'; // Import AdminPage
 
 export default function HomePage() {
   const [user, setUser] = useState(null);
   const [loads, setLoads] = useState([]);
   const [selectedView, setSelectedView] = useState('home');
 
+  // Load user from localStorage once
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
@@ -19,6 +21,7 @@ export default function HomePage() {
     }
   }, []);
 
+  // Fetch loads from backend
   useEffect(() => {
     async function fetchLoads() {
       const res = await fetch('/api/loads');
@@ -27,6 +30,11 @@ export default function HomePage() {
     }
     fetchLoads();
   }, []);
+
+  // 🧠 Render AdminPage if admin is logged in
+  if (user?.username === 'admin') {
+    return <AdminPage />;
+  }
 
   const renderView = () => {
     switch (selectedView) {
@@ -51,7 +59,6 @@ export default function HomePage() {
       <div style={{ marginTop: '80px' }}>
         {renderView()}
       </div>
-      {/* Global modal root for React Portals */}
       <div id="modal-root"></div>
     </>
   );

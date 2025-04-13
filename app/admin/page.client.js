@@ -640,7 +640,11 @@ export default function AdminPage() {
             <li><button onClick={() => setSelectedSection('users')}>Users</button></li>
             <li><button onClick={() => setSelectedSection('transactions')}>Transactions</button></li>
           </ul>
+          
         </nav>
+
+        
+        
         <div className="header-actions">
           <button onClick={markAllNotificationsAsRead} title="Mark all notifications as read">Mark All Read</button>
           <div className="theme-toggle">
@@ -651,6 +655,20 @@ export default function AdminPage() {
             )}
           </div>
         </div>
+        <button
+  className="admin-close-btn"
+  onClick={() => {
+    const confirmExit = confirm('Are you sure you want to close the admin panel?');
+    if (confirmExit) {
+      localStorage.removeItem('user');
+      window.location.reload();
+    }
+  }}
+  title="Close Admin Panel"
+>
+  ✕
+</button>
+
       </header>
 
       {/* ================= LOADS SECTION ================= */}

@@ -7,6 +7,8 @@
   color: #000000;
   background-color: #f9f9f9;
   transition: background-color 0.3s ease, color 0.3s ease;
+  overflow:scroll;
+  height: 800px;
 }
 
 /* Dark Mode Container */
@@ -701,4 +703,22 @@
   border-radius: 4px;
   border: 1px solid #ddd;
   margin: 5px;
+}
+.admin-close-btn {
+  background: #ff5722;
+  color: #fff;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  line-height: 1.2;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.admin-close-btn:hover {
+  background: #e64a19;
 }

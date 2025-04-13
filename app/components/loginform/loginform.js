@@ -1,12 +1,10 @@
 'use client';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import './loginform.css';
 
 export default function LoginForm({ setUser, onClose }) {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
-  const router = useRouter();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -15,24 +13,23 @@ export default function LoginForm({ setUser, onClose }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(credentials),
-    });
-    const data = await res.json();
-    if (data.error) {
-      alert(data.error);
-    } else {
-      // For admin, redirect to /admin; otherwise, set user state and persist user info
-      if (data.user && data.user.username === 'admin') {
-        localStorage.setItem('user', JSON.stringify(data.user));
-        router.push('/admin');
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(credentials),
+      });
+      const data = await res.json();
+      if (data.error) {
+        alert(data.error);
       } else {
-        setUser(data.user);
         localStorage.setItem('user', JSON.stringify(data.user));
-        onClose();
+        setUser(data.user);
+        onClose(); // This closes the login modal
       }
+    } catch (error) {
+      console.error('Login failed:', error);
+      alert('Unexpected error during login.');
     }
   };
 
