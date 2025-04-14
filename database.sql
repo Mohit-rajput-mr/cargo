@@ -1,83 +1,84 @@
--- No CREATE DATABASE or USE statements -- it will just create these tables 
--- in whichever database you're already "in" with phpMyAdmin.
+CREATE DATABASE cargodb;
+USE cargodb;
 
--- 1) Create the 'users' table
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `siteId` VARCHAR(20) NOT NULL,
-  `username` VARCHAR(255) NOT NULL UNIQUE,
-  `password` VARCHAR(255) NOT NULL,
-  `name` VARCHAR(255) NOT NULL,
-  `email` VARCHAR(255) NOT NULL,
-  `truckType` VARCHAR(100) NOT NULL,
-  `customTruckType` VARCHAR(100),
-  `vehicleImage` VARCHAR(255),
-  `idNumber` VARCHAR(50) NOT NULL,
-  `phone` VARCHAR(50) NOT NULL,
-  `iban` VARCHAR(100),
-  `swiftCode` VARCHAR(50),
-  `recipientName` VARCHAR(255),
-  `drivingLicenseFront` VARCHAR(255),
-  `drivingLicenseBack` VARCHAR(255),
-  `idCardFront` VARCHAR(255),
-  `idCardBack` VARCHAR(255),
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `isDeleted` TINYINT(1) NOT NULL DEFAULT 0,
-  `notifications` TEXT,
+-- Table structure for table `bids`
+CREATE TABLE `bids` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `loadId` int(11) NOT NULL,
+  `bidAmount` varchar(50) NOT NULL,
+  `userId` int(11) NOT NULL,
+  `status` varchar(20) DEFAULT 'pending',
+  `adminMessage` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `status_updated_at` timestamp NULL DEFAULT NULL,
+  `isRemoved` tinyint(1) NOT NULL DEFAULT 0,
+  `removed_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 2) Create the 'loads' table
-CREATE TABLE IF NOT EXISTS `loads` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `imageUrl` TEXT NOT NULL,
-  `title` VARCHAR(255) NOT NULL,
-  `description` TEXT,
-  `pickup` VARCHAR(255) NOT NULL,
-  `delivery` VARCHAR(255) NOT NULL,
-  `pay` VARCHAR(50) NOT NULL,
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+-- Table structure for table `contacts`
+CREATE TABLE `contacts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `description` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 3) Create the 'bids' table
-CREATE TABLE IF NOT EXISTS `bids` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `loadId` INT NOT NULL,
-  `bidAmount` VARCHAR(50) NOT NULL,
-  `userId` INT NOT NULL,
-  `status` VARCHAR(20) DEFAULT 'pending',
-  `adminMessage` TEXT,
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `status_updated_at` TIMESTAMP NULL,
-  `isRemoved` TINYINT(1) NOT NULL DEFAULT 0,
-  `removed_at` TIMESTAMP NULL,
+-- Table structure for table `loads`
+CREATE TABLE `loads` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `imageUrl` text NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `pickup` varchar(255) NOT NULL,
+  `delivery` varchar(255) NOT NULL,
+  `pay` varchar(50) NOT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 4) Create the 'contacts' table
-CREATE TABLE IF NOT EXISTS `contacts` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `description` TEXT,
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+-- Table structure for table `services`
+CREATE TABLE `services` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `description` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 5) Create the 'services' table
-CREATE TABLE IF NOT EXISTS `services` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `description` TEXT,
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+-- Table structure for table `transactions`
+CREATE TABLE `transactions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userId` int(11) NOT NULL,
+  `payDescription` text DEFAULT NULL,
+  `paidAmount` varchar(50) NOT NULL,
+  `documentUrl` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 6) Create the 'transactions' table
-CREATE TABLE IF NOT EXISTS `transactions` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `userId` INT NOT NULL,
-  `payDescription` TEXT,
-  `paidAmount` VARCHAR(50) NOT NULL,
-  `documentUrl` VARCHAR(255),
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-);
+-- Table structure for table `users`
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `siteId` varchar(20) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `truckType` varchar(100) NOT NULL,
+  `customTruckType` varchar(100) DEFAULT NULL,
+  `vehicleImage` varchar(255) DEFAULT NULL,
+  `idNumber` varchar(50) NOT NULL,
+  `phone` varchar(50) NOT NULL,
+  `iban` varchar(100) DEFAULT NULL,
+  `swiftCode` varchar(50) DEFAULT NULL,
+  `recipientName` varchar(255) DEFAULT NULL,
+  `drivingLicenseFront` varchar(255) DEFAULT NULL,
+  `drivingLicenseBack` varchar(255) DEFAULT NULL,
+  `idCardFront` varchar(255) DEFAULT NULL,
+  `idCardBack` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `isDeleted` tinyint(1) NOT NULL DEFAULT 0,
+  `notifications` text DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

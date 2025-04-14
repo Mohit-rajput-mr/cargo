@@ -850,11 +850,7 @@
   background-color: #1976d2;
 }
 
-/* 
-  Mobile Adjustments:
-  Force single-column layout so 
-  Pickup, Delivery, Pay fields appear vertically
-*/
+
 @media (max-width: 768px) {
   .edit-load-form {
     grid-template-columns: 1fr !important;
