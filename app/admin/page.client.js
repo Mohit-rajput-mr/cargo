@@ -3,10 +3,8 @@ import { useState, useEffect, useRef } from 'react';
 import Modal from '../components/modal/modal';
 import { FaCopy, FaMoon, FaSun } from 'react-icons/fa';
 import Pusher from 'pusher-js';
+import ClientPay from '../clientpay/clientpay'; // NEW: Import for Client Payments section
 import './page.css';
-
-// No more socket.io import
-// let socket;
 
 export default function AdminPage() {
   // Dark Mode Toggle State with persistence
@@ -21,18 +19,14 @@ export default function AdminPage() {
 
   useEffect(() => {
     const storedMode = localStorage.getItem("adminDarkMode");
-    if (storedMode === "true") {
-      setDarkMode(true);
-    } else {
-      setDarkMode(false);
-    }
+    setDarkMode(storedMode === "true");
   }, []);
 
   // Notification state and refresh control
   const [notifications, setNotifications] = useState([]);
   const markAllNotificationsAsRead = () => setNotifications([]);
 
-  // Selected section control & Refresh buttons
+  // Selected section control; added new tab "clientpayments"
   const [selectedSection, setSelectedSection] = useState('loads');
 
   // ================= LOADS SECTION =================
@@ -639,12 +633,9 @@ export default function AdminPage() {
             <li><button onClick={() => setSelectedSection('bids')}>Bids</button></li>
             <li><button onClick={() => setSelectedSection('users')}>Users</button></li>
             <li><button onClick={() => setSelectedSection('transactions')}>Transactions</button></li>
+            <li><button onClick={() => setSelectedSection('clientpayments')}>Client Payments</button></li>
           </ul>
-          
         </nav>
-
-        
-        
         <div className="header-actions">
           <button onClick={markAllNotificationsAsRead} title="Mark all notifications as read">Mark All Read</button>
           <div className="theme-toggle">
@@ -656,19 +647,17 @@ export default function AdminPage() {
           </div>
         </div>
         <button
-  className="admin-close-btn"
-  onClick={() => {
-    const confirmExit = confirm('Are you sure you want to close the admin panel?');
-    if (confirmExit) {
-      localStorage.removeItem('user');
-      window.location.reload();
-    }
-  }}
-  title="Close Admin Panel"
->
-  ✕
-</button>
-
+          className="admin-close-btn"
+          onClick={() => {
+            if (confirm('Are you sure you want to close the admin panel?')) {
+              localStorage.removeItem('user');
+              window.location.reload();
+            }
+          }}
+          title="Close Admin Panel"
+        >
+          ✕
+        </button>
       </header>
 
       {/* ================= LOADS SECTION ================= */}
@@ -1082,6 +1071,13 @@ export default function AdminPage() {
               </ul>
             )}
           </div>
+        </section>
+      )}
+
+      {/* NEW: CLIENT PAYMENTS SECTION */}
+      {selectedSection === 'clientpayments' && (
+        <section className="admin-section">
+          <ClientPay />
         </section>
       )}
 

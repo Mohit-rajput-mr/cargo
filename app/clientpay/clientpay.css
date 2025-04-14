@@ -1,0 +1,52 @@
+.container {
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    margin-top: 20px;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .form label {
+    font-weight: bold;
+  }
+  
+  .form input {
+    padding: 5px;
+    margin-top: 5px;
+  }
+  
+  .form button {
+    padding: 10px;
+    background-color: #03c300;
+    border: none;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .paymentLink {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #e6f7ff;
+    border: 1px solid #91d5ff;
+    word-break: break-all;
+  }
+  
+  .transactions {
+    margin-top: 30px;
+  }
+  
+  .transactions ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .transactions li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
