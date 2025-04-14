@@ -34,7 +34,7 @@ export async function POST(request) {
       metadata: { loadId, driverId, clientEmail },
     });
 
-    // Insert the pending transaction record into DB
+    // Insert the pending transaction record into DB.
     await db.execute(
       `INSERT INTO client_transactions 
        (loadId, driverId, clientEmail, amount, stripePaymentId, paymentLink, status, adminStatus) 
