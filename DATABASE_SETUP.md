@@ -55,6 +55,7 @@ Update your `.env` file with the following variables:
 ```env
 # MySQL Database Configuration
 MYSQL_HOST=localhost
+MYSQL_PORT=11932
 MYSQL_USER=your_username
 MYSQL_PASSWORD=your_password
 MYSQL_DATABASE=cargo_db

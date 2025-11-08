@@ -1,15 +1,8 @@
 import Stripe from 'stripe';
-import mysql from 'mysql2/promise';
+// DATABASE DISABLED - Using hardcoded data instead
+// import pool from '@/lib/db';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2022-11-15' });
-
-// Create a new DB connection (in a real app, consider using a connection pool)
-const db = await mysql.createConnection({
-  host: process.env.MYSQL_HOST,
-  user: process.env.MYSQL_USER,
-  password: process.env.MYSQL_PASSWORD,
-  database: process.env.MYSQL_DATABASE,
-});
 
 export async function POST(request) {
   try {
@@ -34,22 +27,23 @@ export async function POST(request) {
       metadata: { loadId, driverId, clientEmail },
     });
 
-    // Insert the pending transaction record into DB.
-    await db.execute(
-      `INSERT INTO client_transactions 
-       (loadId, driverId, clientEmail, amount, stripePaymentId, paymentLink, status, adminStatus) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [
-        loadId,
-        driverId,
-        clientEmail,
-        amount,
-        session.payment_intent || null,
-        session.url || '',
-        'pending',
-        'pending',
-      ]
-    );
+    // DATABASE DISABLED - Transaction record not saved
+    // Insert the pending transaction record into DB using connection pool
+    // await pool.query(
+    //   `INSERT INTO client_transactions 
+    //    (loadId, driverId, clientEmail, amount, stripePaymentId, paymentLink, status, adminStatus) 
+    //    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    //   [
+    //     loadId,
+    //     driverId,
+    //     clientEmail,
+    //     amount,
+    //     session.payment_intent || null,
+    //     session.url || '',
+    //     'pending',
+    //     'pending',
+    //   ]
+    // );
 
     return new Response(JSON.stringify({ paymentLink: session.url, sessionId: session.id }), {
       status: 200,

@@ -1,9 +1,11 @@
-import pool from '../../../../../lib/db';
+// DATABASE DISABLED - Using hardcoded data instead
+// import pool from '../../../../../lib/db';
 
 export async function GET(request, { params: { id } }) {
   try {
-    const [rows] = await pool.query('SELECT * FROM load_images WHERE load_id=?', [id]);
-    return new Response(JSON.stringify(rows), {
+    // Return empty array since we're using single image URLs in the main load data
+    // const [rows] = await pool.query('SELECT * FROM load_images WHERE load_id=?', [id]);
+    return new Response(JSON.stringify([]), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
     });

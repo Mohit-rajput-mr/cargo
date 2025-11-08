@@ -55,7 +55,7 @@ export default function LoadCard({ load, currentUser }) {
         </div>
       )}
       <h2>{load.title}</h2>
-      <p>{load.description}</p>
+      <div className="description" style={{ whiteSpace: 'pre-line' }}>{load.description}</div>
       <p className="pickup">Pickup: {load.pickup}</p>
       <p className="delivery">Delivery: {load.delivery}</p>
       <p className="price">Pay: {load.pay}</p>
